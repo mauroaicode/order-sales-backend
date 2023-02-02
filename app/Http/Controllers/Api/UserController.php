@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\EditUserRequest;
-use App\Models\Customer;
 use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Support\Str;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UsersResources;
+use App\Http\Requests\EditUserRequest;
 
 
 class UserController extends Controller
@@ -24,6 +24,7 @@ class UserController extends Controller
         $users = UsersResources::collection(
             User::with('roles')->latest()->get()
         );
+        if (count($users) === 0) return response()->json(['No hay usuarios registrados.'], 401);
         return response()->json([
             'success' => true,
             'message' => 'Get Users',
@@ -78,6 +79,9 @@ class UserController extends Controller
         DB::beginTransaction(); //Inicializamos la transacción
         try {
             $user = User::find($id);
+            /* Validamos que existe el usuario en la base de datos*/
+            if (!$user) return response()->json(['El usuario que quieres editar no existe.'], 404);
+
             if ($request['name'] !== $user->name) {
                 $user->slug = Str::slug($request['name'] . '-' . Str::random(10), '-');
             }
@@ -110,13 +114,14 @@ class UserController extends Controller
     /*=============================================
          ELIMINAR USUARIO
        =============================================*/
-    public function deleteUser($id)
+    public function deleteUser($id): \Illuminate\Http\JsonResponse
     {
         DB::beginTransaction();
         try {
             $user = User::where('id', $id)->with('roles')->first();
-
-            if ($user->roles[0]->name === 'Customer') {
+            /* Validamos que existe el usuario en la base de datos*/
+            if (!$user) return response()->json(['El usuario que quieres eliminar no existe.'], 404);
+            if ($user->roles[0]->name === 'Cliente') {
                 $customer = Customer::where('user_id', $user->id);
                 $customer->delete();
             }
@@ -125,7 +130,7 @@ class UserController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Delete User',
-                'response' => 'delete_User',
+                'response' => 'delete_user',
 
             ], 200);
         } catch (\Throwable $th) {

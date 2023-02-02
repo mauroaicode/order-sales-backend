@@ -14,7 +14,7 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'product_description' => $this->faker->sentence(15)
         ];
     }
 }

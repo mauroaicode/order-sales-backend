@@ -4,6 +4,8 @@ namespace App\Http;
 
 use App\Http\Middleware\AdminPermissions;
 use App\Http\Middleware\Cors;
+use App\Http\Middleware\ProductPermissions;
+use App\Http\Middleware\UserPermissions;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,5 +70,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt.verify' => \App\Http\Middleware\JwtMiddleware::class,
         'admin.permissions' => AdminPermissions::class,
+        'user.permissions' => UserPermissions::class,
+        'product.permissions' => ProductPermissions::class,
     ];
 }

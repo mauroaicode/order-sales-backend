@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api\RolController;
 use \App\Http\Controllers\Api\UserController;
 use \App\Http\Controllers\Auth\LoginController;
+use \App\Http\Controllers\Api\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,25 @@ Route::group(['middleware' => ['auth:api']], function () {
         =============================================*/
         /*Obtener la lista de roles*/
         Route::get('get-roles', [RolController::class, 'getRoles'])->name('get.roles');
+        /*Agregar Rol*/
+        Route::post('add-role', [RolController::class, 'addRole'])->name('add.role');
+        /*Editar Rol*/
+        Route::post('edit-role/{id}', [RolController::class, 'editRole'])->name('edit.role');
+        /*Eliminar Rol*/
+        Route::post('delete-role/{id}', [RolController::class, 'deleteRole'])->name('delete.role');
     });
 
+    /*=============================================
+       RUTAS PARA LOS PRODUCTOS
+    =============================================*/
+    /*Obtener los productos*/
+    Route::get('get-products', [ProductController::class, 'getProducts'])->name('get.products');
+    /*Agregar Producto*/
+    Route::post('add-product', [ProductController::class, 'addProduct'])->middleware('product.permissions')->name('add.product');
+    /*Editar Producto*/
+    Route::post('edit-product/{id}', [ProductController::class, 'editProduct'])->middleware('product.permissions')->name('edit.product');
+    /*Eliminar Producto*/
+    Route::post('delete-product/{id}', [ProductController::class, 'deleteProduct'])->middleware('product.permissions')->name('deleter.product');
 });
+/*Subir imagen del producto*/
+Route::post('upload-picture/{id}', [ProductController::class, 'uploadPicture'])->name('api.upload.picture');

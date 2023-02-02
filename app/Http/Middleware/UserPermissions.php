@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class AdminPermissions
+class UserPermissions
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class AdminPermissions
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->roles[0]->name == 'Administrador'){
+        if (auth()->user()->roles[0]->name == 'Empleado'){
             return $next ($request);
         }else{
             return response()->json(['No tienes permisos para realizar esta acción.'], 401);
