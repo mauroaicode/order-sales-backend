@@ -21,6 +21,7 @@ class ProductsResources extends JsonResource
             'description' => $this->product_description,
             'price' => $this->price,
             'picture' => $this->picture,
+            'quantity' => 1,
             'created_at' => Date::parse($this->created_at)->locale('es')->format('l d F Y'),
         ];
     }

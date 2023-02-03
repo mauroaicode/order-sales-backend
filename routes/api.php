@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api\RolController;
 use \App\Http\Controllers\Api\UserController;
+use \App\Http\Controllers\Api\OrderController;
 use \App\Http\Controllers\Auth\LoginController;
 use \App\Http\Controllers\Api\ProductController;
 
@@ -71,6 +72,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('edit-product/{id}', [ProductController::class, 'editProduct'])->middleware('product.permissions')->name('edit.product');
     /*Eliminar Producto*/
     Route::post('delete-product/{id}', [ProductController::class, 'deleteProduct'])->middleware('product.permissions')->name('deleter.product');
+    /*=============================================
+       RUTAS PARA LAS ORDENES DE COMPRA
+    =============================================*/
+    /* Crear Orden de Compra*/
+    Route::post('create-order', [OrderController::class, 'createOrder'])->name('create.order');
 });
 /*Subir imagen del producto*/
 Route::post('upload-picture/{id}', [ProductController::class, 'uploadPicture'])->name('api.upload.picture');

@@ -51,6 +51,7 @@ class LoginController extends Controller
 
         return response()->json([
             'token' => $token,
+            'roles' => auth()->user()->getRoleNames(),
             'user' => auth()->user(),
             'token_type' => 'bearer',
             'expiration_in' => $expiration
@@ -60,11 +61,6 @@ class LoginController extends Controller
     protected function sendFailedLoginResponse(Request $request)
     {
         $user = $this->guard()->user();
-//        if ($user instanceof MustVerifyEmail && !$user->hasVerifiedEmail()) {
-//            return response()->json(['errors' => [
-//                'verification' => 'Necesitas verificar tu cuenta de correo electrónico'
-//            ]], 422);
-//        }
         throw ValidationException::withMessages([
             $this->username() => 'Credenciales de acceso incorrectas.'
         ]);
