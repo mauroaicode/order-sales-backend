@@ -39,7 +39,6 @@ class UserController extends Controller
     =============================================*/
     public function addUser(UserRequest $request): \Illuminate\Http\JsonResponse
     {
-
         DB::beginTransaction(); //Inicializamos la transacción
         try {
             $user = User::create([

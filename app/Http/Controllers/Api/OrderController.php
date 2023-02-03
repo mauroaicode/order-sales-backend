@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateOrderRequest;
+use App\Http\Resources\OrdersCustomerResources;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use Carbon\Carbon;
@@ -53,5 +54,35 @@ class OrderController extends Controller
             DB::rollBack();
             return response()->json($response, 500);
         }
+    }
+
+    public function getOrdersCustomer($id): \Illuminate\Http\JsonResponse
+    {
+        $orders = OrdersCustomerResources::collection(
+            Order::where('customer_id', $id)->with('products.product','customer.user')->get()
+        );
+        if (count($orders) === 0) return response()->json(['No hay ordenes para este cliente.'], 401);
+        return response()->json([
+            'success' => true,
+            'message' => 'Get Users',
+            'response' => 'get_users',
+            'total' => $orders->count(),
+            'data' => $orders,
+        ], 200);
+    }
+
+    public function getOrders(): \Illuminate\Http\JsonResponse
+    {
+        $orders = OrdersCustomerResources::collection(
+            Order::with('products.product','customer.user')->get()
+        );
+        if (count($orders) === 0) return response()->json(['No hay ordenes creadas.'], 401);
+        return response()->json([
+            'success' => true,
+            'message' => 'Get Users',
+            'response' => 'get_users',
+            'total' => $orders->count(),
+            'data' => $orders,
+        ], 200);
     }
 }

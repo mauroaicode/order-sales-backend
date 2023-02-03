@@ -37,6 +37,20 @@ class DatabaseSeeder extends Seeder
         });
 
         /*=============================================
+          CREAMOS UN USUARIO CLIENTE
+      =============================================*/
+        User::factory()->count(1)->create([
+            'name' => 'Maria Yanez',
+            'email' => 'cliente@ordenesventas.com',
+            'slug' => Str::slug(strtolower('Maria Yanez') . '-' . Str::random(10), '-'),
+        ])->each(function (User $user) use ($customer) {
+            Customer::factory()->count(1)->create([
+                'user_id' => $user->id
+            ]);
+            $user->roles()->attach($customer['id']); // Asignamos el rol cliente al usuario
+        });
+
+        /*=============================================
            CREAMOS DIEZ CLIENTES
        =============================================*/
         User::factory()->count(10)->create([

@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AdminPermissions;
 use App\Http\Middleware\Cors;
+use App\Http\Middleware\OrderPermissions;
 use App\Http\Middleware\ProductPermissions;
 use App\Http\Middleware\UserPermissions;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -72,5 +73,6 @@ class Kernel extends HttpKernel
         'admin.permissions' => AdminPermissions::class,
         'user.permissions' => UserPermissions::class,
         'product.permissions' => ProductPermissions::class,
+        'order.permissions' => OrderPermissions::class,
     ];
 }

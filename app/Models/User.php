@@ -55,4 +55,8 @@ class User extends Authenticatable  implements JWTSubject
     {
         return [];
     }
+    public function customer(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+       return $this->hasOne(Customer::class);
+    }
 }

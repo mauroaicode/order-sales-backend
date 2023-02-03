@@ -77,6 +77,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     =============================================*/
     /* Crear Orden de Compra*/
     Route::post('create-order', [OrderController::class, 'createOrder'])->name('create.order');
+    /* Obtener todas las ordenes de compra*/
+    Route::get('get-orders', [OrderController::class, 'getOrders'])->middleware('order.permissions')->name('get.orders.customer');
+    /* Obtener las Ordene de Compra por Cliente*/
+    Route::get('get-orders/customer/{id}', [OrderController::class, 'getOrdersCustomer'])->name('get.orders.customer');
+
 });
 /*Subir imagen del producto*/
 Route::post('upload-picture/{id}', [ProductController::class, 'uploadPicture'])->name('api.upload.picture');

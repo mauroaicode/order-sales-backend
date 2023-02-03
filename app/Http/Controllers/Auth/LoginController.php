@@ -75,7 +75,7 @@ class LoginController extends Controller
     public function user(Request $request)
     {
         if (auth()->check()) {
-            $user = User::where('id',auth()->user()->id)
+            $user = User::where('id',auth()->user()->id)->with('roles', 'customer')
                 ->first();
             return response()->json(['user' => $user], 200);
         }
